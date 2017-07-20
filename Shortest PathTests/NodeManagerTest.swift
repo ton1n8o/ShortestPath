@@ -37,13 +37,25 @@ class NodeManagerTest: XCTestCase {
     }
     
     func test_AddNodeToNode_Returns_NodeWithNewAddedNode() {
-        let nodeA = (Node(name: "node_A"))
-        let nodeB = (Node(name: "node_B"))
+        let nodeA = Node(name: "node_A")
+        let nodeB = Node(name: "node_B")
         
         let nodeWithNeighbour = sut.addNode(nodeB, toNode: nodeA)
-        let nodeNeighbour = nodeWithNeighbour.neighbours.first?.node
+        let newNodeNeighbour = nodeWithNeighbour.neighbours.first?.node
         
-        XCTAssertEqual(nodeNeighbour, nodeB)
+        XCTAssertEqual(nodeA, nodeWithNeighbour)
+        XCTAssertEqual(newNodeNeighbour, nodeB)
+    }
+    
+    func test_AddNodeToNodeAtDistance_Returns_NodeWithNewAddedNodeAtDistance() {
+        let nodeA = Node(name: "node_A")
+        let nodeB = Node(name: "node_B")
+        
+        let nodeWithNeighbour = sut.addNode(nodeB, toNode: nodeA, atDistance: 5)
+        let newNodeNeighbourDistance = nodeWithNeighbour.neighbours.first?.distance
+        
+        XCTAssertEqual(nodeA, nodeWithNeighbour)
+        XCTAssertEqual(newNodeNeighbourDistance, 5)
     }
     
 }
