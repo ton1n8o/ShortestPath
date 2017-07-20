@@ -13,43 +13,42 @@ class NodeTest: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
     
     func test_Init_WhenGiveName_SetsName() {
         let node = Node(name: "Foo")
         
-        XCTAssertEqual(node.name, "Foo", "should set node name.")
+        XCTAssertEqual(node.name, "Foo")
     }
     
     func test_Init_WhenGivenDistance_SetsDistance() {
         let node = Node(name: "Foo", distanceCost: 1)
         
-        XCTAssertEqual(node.distanceCost, 1, "should set distanceCost.")
+        XCTAssertEqual(node.distanceCost, 1)
     }
     
     func test_Init_WhenGivingNeighbors_SetsNeighbors() {
-        let neighbors: [Node] = []
-        let node = Node(name: "Foo", neighbors: neighbors)
+        let neighbours: [(node: Node, distance: Int)] = []
+        let node = Node(name: "Foo", neighbours: neighbours)
         
-        XCTAssertNotNil(node.neighbors, "should set neighbors.")
+        XCTAssertNotNil(node.neighbours)
     }
     
     func test_Init_WhenGivingVisited_SetsVisited() {
         let node = Node(name: "Foo", visited: true)
         
-        XCTAssertTrue(node.visited, "should set visited.")
+        XCTAssertTrue(node.visited)
     }
     
-    func test_Init_WhenGivenDistanceToNeighbor_SetsDistanceToNeighbor() {
-        let node = Node(name: "Foo", distanceToNeighbor: 5)
+    func test_Nodes_WhenNameDiffer_AreNotEqual() {
+        let nodeA = Node(name: "node_A")
+        let nodeB = Node(name: "node_B")
         
-        XCTAssertEqual(node.distanceToNeighbor, 5, "should set distanceToNeighbor.")  
+        XCTAssertNotEqual(nodeA, nodeB)
     }
     
 }

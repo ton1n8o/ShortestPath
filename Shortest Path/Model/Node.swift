@@ -8,24 +8,30 @@
 
 import Foundation
 
-struct Node {
+struct Node: Equatable {
     
     let name: String
-    let distanceCost: Int?
-    let distanceToNeighbor: Int
-    let neighbors: [Node]
-    let visited: Bool
+    var distanceCost: Int?
+    var neighbours: [(node: Node, distance: Int)]
+    var visited: Bool
     
     init(name: String,
          visited: Bool = false,
          distanceCost: Int? = nil,
-         distanceToNeighbor: Int = 0,
-         neighbors: [Node] = []
+         neighbours: [(Node, Int)] = []
         ) {
         self.name = name
         self.visited = visited
         self.distanceCost = distanceCost
-        self.distanceToNeighbor = distanceToNeighbor
-        self.neighbors = neighbors
+        self.neighbours = neighbours
+    }
+    
+    // MARK: - Equatable
+    
+    static func ==(nodeA: Node, nodeB: Node) -> Bool {
+        if nodeA.name != nodeB.name {
+            return false
+        }
+        return true
     }
 }
