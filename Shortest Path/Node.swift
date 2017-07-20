@@ -11,12 +11,21 @@ import Foundation
 struct Node {
     
     let name: String
-    let distance: Int
+    let distanceCost: Int?
+    let distanceToNeighbor: Int
     let neighbors: [Node]
+    let visited: Bool
     
-    init(name: String, distance: Int = 0, neighbors: [Node] = []) {
+    init(name: String,
+         visited: Bool = false,
+         distanceCost: Int? = nil,
+         distanceToNeighbor: Int = 0,
+         neighbors: [Node] = []
+        ) {
         self.name = name
-        self.distance = distance
+        self.visited = visited
+        self.distanceCost = distanceCost
+        self.distanceToNeighbor = distanceToNeighbor
         self.neighbors = neighbors
     }
 }

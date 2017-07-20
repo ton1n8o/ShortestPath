@@ -28,9 +28,9 @@ class NodeTest: XCTestCase {
     }
     
     func test_Init_WhenGivenDistance_SetsDistance() {
-        let node = Node(name: "Foo", distance: 1)
+        let node = Node(name: "Foo", distanceCost: 1)
         
-        XCTAssertEqual(node.distance, 1, "should set distance.")
+        XCTAssertEqual(node.distanceCost, 1, "should set distanceCost.")
     }
     
     func test_Init_WhenGivingNeighbors_SetsNeighbors() {
@@ -38,6 +38,18 @@ class NodeTest: XCTestCase {
         let node = Node(name: "Foo", neighbors: neighbors)
         
         XCTAssertNotNil(node.neighbors, "should set neighbors.")
+    }
+    
+    func test_Init_WhenGivingVisited_SetsVisited() {
+        let node = Node(name: "Foo", visited: true)
+        
+        XCTAssertTrue(node.visited, "should set visited.")
+    }
+    
+    func test_Init_WhenGivenDistanceToNeighbor_SetsDistanceToNeighbor() {
+        let node = Node(name: "Foo", distanceToNeighbor: 5)
+        
+        XCTAssertEqual(node.distanceToNeighbor, 5, "should set distanceToNeighbor.")  
     }
     
 }
