@@ -12,7 +12,7 @@ struct NodeManager {
     
     func createNode(_ name: String, withNeighbour: String, atDistance: Int = 0) -> Node {
         var nodeA = Node(name: name)
-        let neighbor = createNeighbor(with: withNeighbour, atDistance: atDistance)
+        let neighbor = (Node(name: withNeighbour), atDistance)
         nodeA.neighbours.append(neighbor)
         return nodeA
     }
@@ -22,12 +22,6 @@ struct NodeManager {
         let neighbour = (node, atDistance)
         toNode.neighbours.append(neighbour)
         return toNode
-    }
-    
-    // MARK: - Helpers
-    
-    func createNeighbor(with name: String, atDistance: Int) -> (Node, Int) {
-        return (Node(name: name), atDistance)
     }
     
 }

@@ -26,6 +26,19 @@ struct Node: Equatable {
         self.neighbours = neighbours
     }
     
+    func describeNeighbours() -> String {
+        var desc = ""
+        for neighbour in neighbours {
+            let name = neighbour.node.name
+            let distance = neighbour.distance
+            desc += "name: \(name), distance: \(distance)\n"
+        }
+        if !desc.isEmpty {
+            desc = String(desc.characters.dropLast(1))
+        }
+        return desc
+    }
+    
     // MARK: - Equatable
     
     static func ==(nodeA: Node, nodeB: Node) -> Bool {

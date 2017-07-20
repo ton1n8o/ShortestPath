@@ -29,7 +29,7 @@ class NodeManagerTest: XCTestCase {
         XCTAssertEqual(neighbour?.name, "node_B")
     }
     
-    func test_CreateNodeWithNeighbourAndDistance_Returns_NodeWithNeighbourAndDistance() {
+    func test_CreateNodeWithNeighbourAtDistance_Returns_NodeWithNeighbourAtDistance() {
         let node = sut.createNode("node_A", withNeighbour: "node_B", atDistance: 10)
         let neighbour = node.neighbours.first
         
