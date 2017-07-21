@@ -58,7 +58,15 @@ class NodeTest: XCTestCase {
         
         let neighboursDescription = nodeA.describeNeighbours()
         
-        XCTAssertEqual(neighboursDescription, "name: node_B, distance: 10\nname: node_C, distance: 15")
+        XCTAssertEqual(neighboursDescription, "parent: node_A:\n  name: node_B, distance: 10\n  name: node_C, distance: 15")
+    }
+    
+    func test_DescribeNeighbours_WhenNoNeighbours_ReturnsParentsName() {
+        let nodeA = Node(name: "node_A")
+        
+        let neighboursDescription = nodeA.describeNeighbours()
+        
+        XCTAssertEqual(neighboursDescription, "parent: node_A:\n  no neighbours.")
     }
     
 }
