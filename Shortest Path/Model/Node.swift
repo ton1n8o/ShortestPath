@@ -29,7 +29,7 @@ struct Node: Equatable {
     func describeNeighbours() -> String {
         var desc = "parent: \(name):"
         if neighbours.isEmpty {
-            desc = "parent: \(name):\n  no neighbours."
+            return "parent: \(name):\n  no neighbours."
         }
         for neighbour in neighbours {
             let name = neighbour.node.name
@@ -37,6 +37,14 @@ struct Node: Equatable {
             desc += "\n  name: \(name), distance: \(distance)"
         }
         return desc
+    }
+    
+    func nodeCount() -> Int {
+        var count = 1
+        for n in neighbours {
+            count += n.node.nodeCount()
+        }
+        return count
     }
     
     // MARK: - Equatable

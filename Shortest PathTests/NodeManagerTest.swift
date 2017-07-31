@@ -58,4 +58,52 @@ class NodeManagerTest: XCTestCase {
         XCTAssertEqual(newNodeNeighbourDistance, 5)
     }
     
+    func test_SaveNodeChain_Should_SaveNodeInNodeManager() {
+        let nodeA = Node(name: "node_A")
+        
+        sut.saveNodeChain(nodeA)
+        
+        XCTAssertEqual(sut.nodeChain, nodeA)
+    }
+    
+    func test_NodeCount_Returns_TotalNodeCount() {
+        let nodeA = Node(name: "node_A")
+        sut.saveNodeChain(nodeA)
+        XCTAssertEqual(sut.nodeCount(), 1)
+    }
+    
+    func test_NodeCount_AddingTwoNodes_Returns_TotalNodeCountTwo() {
+        let nodeA = Node(name: "node_A")
+        let nodeB = Node(name: "node_B")
+
+        sut.saveNodeChain(nodeA)
+        let newNodeChain = sut.addNode(nodeB, toNode: sut.nodeChain, atDistance: 10)
+        sut.saveNodeChain(newNodeChain)
+        XCTAssertEqual(sut.nodeCount(), 2)
+    }
+
+    func test_NodeCount_AddingNodeWithChild_ReturnsTotalNodeCountThree() {
+        let nodeA = Node(name: "node_A")
+        let nodeB = sut.createNode("node_B", withNeighbour: "node_C", atDistance: 10)
+
+        let nodeChain = sut.addNode(nodeB, toNode: nodeA, atDistance: 5)
+
+        sut.saveNodeChain(nodeChain)
+
+        XCTAssertEqual(sut.nodeCount(), 3)
+    }
+    
+    func test_NodeCount_AddingNodeWithTwoLevelChild_ReturnsTotalNodeCount() {
+        var nodeA = Node(name: "node_A")
+        var nodeB = Node(name: "node_B")
+        let nodeC = sut.createNode("node_C", withNeighbour: "node_D", atDistance: 23)
+        
+        nodeB = sut.addNode(nodeC, toNode: nodeB, atDistance: 5)
+        nodeA = sut.addNode(nodeB, toNode: nodeA, atDistance: 3)
+        
+        sut.saveNodeChain(nodeA)
+        
+        XCTAssertEqual(sut.nodeCount(), 4)
+    }
+    
 }

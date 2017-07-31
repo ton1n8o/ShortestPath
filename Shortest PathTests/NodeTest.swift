@@ -69,4 +69,17 @@ class NodeTest: XCTestCase {
         XCTAssertEqual(neighboursDescription, "parent: node_A:\n  no neighbours.")
     }
     
+    func test_NodeCount_Returns_TotalNodes() {
+        let nodeA = Node(name: "node_A")
+        XCTAssertEqual(nodeA.nodeCount(), 1)
+    }
+    
+    func test_NodeCountWhenNodeHasOneChield_Returns_TotalNodesTwo() {
+        let nodeA = Node(name: "node_A")
+        let nodeB = Node(name: "node_B")
+        
+        let newNode = NodeManager().addNode(nodeB, toNode: nodeA, atDistance: 5)
+        
+        XCTAssertEqual(newNode.nodeCount(), 2)
+    }
 }
