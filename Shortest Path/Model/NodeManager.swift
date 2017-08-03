@@ -12,6 +12,10 @@ struct NodeManager {
     
     var nodeChain: Node!
     
+    init(baseNodeName: String) {
+       self.nodeChain = Node(name: baseNodeName)
+    }
+    
     func createNode(_ name: String, withNeighbour: String, atDistance: Int = 0) -> Node {
         var nodeA = Node(name: name)
         let neighbor = (Node(name: withNeighbour), atDistance)

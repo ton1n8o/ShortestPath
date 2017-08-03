@@ -78,7 +78,7 @@ class NodeTest: XCTestCase {
         let nodeA = Node(name: "node_A")
         let nodeB = Node(name: "node_B")
         
-        let newNode = NodeManager().addNode(nodeB, toNode: nodeA, atDistance: 5)
+        let newNode = NodeManager(baseNodeName: "").addNode(nodeB, toNode: nodeA, atDistance: 5)
         
         XCTAssertEqual(newNode.nodeCount(), 2)
     }

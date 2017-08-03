@@ -15,11 +15,23 @@ class NodeManagerTest: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        sut = NodeManager()
+        sut = NodeManager(baseNodeName: "")
     }
     
     override func tearDown() {
         super.tearDown()
+    }
+    
+    func test_Init_NodeManager_Returns_NodeManger_With_NewChain() {
+        let nodeManager = NodeManager(baseNodeName: "")
+        
+        XCTAssertNotNil(nodeManager.nodeChain)
+    }
+    
+    func test_Init_NodeManager_WithBaseNodeName_Returns_Chain_With_BaseNodeNamed() {
+        let nodeManager = NodeManager(baseNodeName: "node_A")
+        
+        XCTAssertEqual(nodeManager.nodeChain.name, "node_A")
     }
     
     func test_CreateNodeWithNeighbour_Returns_NodeWithNeighbour() {
@@ -79,6 +91,7 @@ class NodeManagerTest: XCTestCase {
         sut.saveNodeChain(nodeA)
         let newNodeChain = sut.addNode(nodeB, toNode: sut.nodeChain, atDistance: 10)
         sut.saveNodeChain(newNodeChain)
+        
         XCTAssertEqual(sut.nodeCount(), 2)
     }
 
