@@ -51,6 +51,13 @@ class NodeTest: XCTestCase {
         XCTAssertNotEqual(nodeA, nodeB)
     }
     
+    func test_Nodes_WhenNameEqual_AreEqual() {
+        let nodeA = Node(name: "node_A")
+        let nodeB = Node(name: "node_A")
+        
+        XCTAssertEqual(nodeA, nodeB)
+    }
+    
     func test_DescribeNeighbours_ReturnsNodeNeighboursDescription() {
         let neighbour_B = (Node(name: "node_B"), distance: 10)
         let neighbour_C = (Node(name: "node_C"), distance: 15)
@@ -74,12 +81,37 @@ class NodeTest: XCTestCase {
         XCTAssertEqual(nodeA.nodeCount(), 1)
     }
     
-    func test_NodeCountWhenNodeHasOneChield_Returns_TotalNodesTwo() {
+    func test_FindNodeByName_ReturnsNode() {
         let nodeA = Node(name: "node_A")
         let nodeB = Node(name: "node_B")
+        let nodeC = Node(name: "node_C")
         
-        let newNode = NodeManager(baseNodeName: "").addNode(nodeB, toNode: nodeA, atDistance: 5)
+        nodeB.neighbours.append((nodeC, 0))
+        nodeA.neighbours.append((nodeB, 0))
         
-        XCTAssertEqual(newNode.nodeCount(), 2)
+        XCTAssertNotNil(nodeA.findNodeByName("node_C"))
+    }
+    
+    func test_FindNodeByName_When_Not_Found_Returns_Nil() {
+        let nodeA = Node(name: "node_A")
+        
+        XCTAssertNil(nodeA.findNodeByName(""))
+    }
+    
+    func test_FindNodeByNameWithNeighbour_When_Not_Found_Returns_Nil() {
+        let nodeA = Node(name: "node_A")
+        let nodeB = Node(name: "node_B")
+        nodeA.neighbours.append((nodeB, 0))
+        
+        XCTAssertNil(nodeA.findNodeByName(" "))
+    }
+    
+    func test_NodeCount_WhenNode_Has_OneChield_Returns_TotalNodesTwo() {
+        let nodeA = Node(name: "node_A")
+        let nodeB = Node(name: "node_B")
+
+        nodeA.neighbours.append((nodeB, 0))
+        
+        XCTAssertEqual(nodeA.nodeCount(), 2)
     }
 }

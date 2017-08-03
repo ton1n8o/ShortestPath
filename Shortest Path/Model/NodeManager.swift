@@ -17,29 +17,23 @@ struct NodeManager {
     }
     
     func createNode(_ name: String, withNeighbour: String, atDistance: Int = 0) -> Node {
-        var nodeA = Node(name: name)
+        let nodeA = Node(name: name)
         let neighbor = (Node(name: withNeighbour), atDistance)
         nodeA.neighbours.append(neighbor)
         return nodeA
     }
     
-    func addNode(_ node: Node, toNode: Node, atDistance: Int = 0) -> Node {
-        var toNode = toNode
+    mutating func addNode(_ node: Node, atDistance: Int = 0) {
         let neighbour = (node, atDistance)
-        toNode.neighbours.append(neighbour)
-        return toNode
+        nodeChain.neighbours.append(neighbour)
     }
     
-    mutating func saveNodeChain(_ node: Node) {
-        nodeChain = node
+    mutating func addNode(_ node: Node, toNodeNamed: String, atDistance: Int = 0) {
+        nodeChain.findNodeByName(toNodeNamed)?.neighbours.append((node, atDistance))
     }
     
     func nodeCount() -> Int {
         return nodeChain.nodeCount()
-    }
-    
-    func createInChain(nroNodes: Int, withinDistance: Range<Int>) -> Node {
-        return Node(name: "")
     }
     
 }

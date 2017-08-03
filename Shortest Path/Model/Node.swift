@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Node: Equatable {
+class Node: Equatable {
     
     let name: String
     var distanceCost: Int?
@@ -45,6 +45,20 @@ struct Node: Equatable {
             count += n.node.nodeCount()
         }
         return count
+    }
+    
+    func findNodeByName(_ name: String) -> Node? {
+        if self.name == name {
+            return self
+        }
+        var nodeFound: Node? = nil
+        for n in neighbours {
+            nodeFound = n.node.findNodeByName(name)
+            if nodeFound != nil {
+                break
+            }
+        }
+        return nodeFound
     }
     
     // MARK: - Equatable

@@ -19,6 +19,7 @@ class NodeManagerTest: XCTestCase {
     }
     
     override func tearDown() {
+        sut = nil
         super.tearDown()
     }
     
@@ -48,74 +49,54 @@ class NodeManagerTest: XCTestCase {
         XCTAssertEqual(neighbour?.distance, 10)
     }
     
-    func test_AddNodeToNode_Returns_NodeWithNewAddedNode() {
-        let nodeA = Node(name: "node_A")
+    func test_AddNode_Should_AddNodeToChain() {
         let nodeB = Node(name: "node_B")
+        sut.addNode(nodeB)
         
-        let nodeWithNeighbour = sut.addNode(nodeB, toNode: nodeA)
-        let newNodeNeighbour = nodeWithNeighbour.neighbours.first?.node
-        
-        XCTAssertEqual(nodeA, nodeWithNeighbour)
-        XCTAssertEqual(newNodeNeighbour, nodeB)
+        XCTAssertEqual(sut.nodeChain.neighbours.first?.node, nodeB)
     }
     
-    func test_AddNodeToNodeAtDistance_Returns_NodeWithNewAddedNodeAtDistance() {
-        let nodeA = Node(name: "node_A")
+    func test_AddNodeToChainAtDistance_UpdatesChain_WithNewAddedNodeAtDistance() {
         let nodeB = Node(name: "node_B")
+        sut.addNode(nodeB, atDistance: 5)
         
-        let nodeWithNeighbour = sut.addNode(nodeB, toNode: nodeA, atDistance: 5)
-        let newNodeNeighbourDistance = nodeWithNeighbour.neighbours.first?.distance
+        let newAddedNode = sut.nodeChain.neighbours.first?.node
+        let newAddedNodeDistance = sut.nodeChain.neighbours.first?.distance
         
-        XCTAssertEqual(nodeA, nodeWithNeighbour)
-        XCTAssertEqual(newNodeNeighbourDistance, 5)
+        XCTAssertEqual(nodeB, newAddedNode)
+        XCTAssertEqual(newAddedNodeDistance, 5)
     }
     
-    func test_SaveNodeChain_Should_SaveNodeInNodeManager() {
-        let nodeA = Node(name: "node_A")
-        
-        sut.saveNodeChain(nodeA)
-        
-        XCTAssertEqual(sut.nodeChain, nodeA)
-    }
-    
-    func test_NodeCount_Returns_TotalNodeCount() {
-        let nodeA = Node(name: "node_A")
-        sut.saveNodeChain(nodeA)
-        XCTAssertEqual(sut.nodeCount(), 1)
-    }
-    
-    func test_NodeCount_AddingTwoNodes_Returns_TotalNodeCountTwo() {
-        let nodeA = Node(name: "node_A")
+    func test_AddNodeToNodeNamed_Should_UpdateChain_WithNewAddedNode() {
+        sut = NodeManager(baseNodeName: "node_A")
         let nodeB = Node(name: "node_B")
-
-        sut.saveNodeChain(nodeA)
-        let newNodeChain = sut.addNode(nodeB, toNode: sut.nodeChain, atDistance: 10)
-        sut.saveNodeChain(newNodeChain)
+        sut.addNode(nodeB)
+        let nodeC = Node(name: "node_C")
         
-        XCTAssertEqual(sut.nodeCount(), 2)
+        sut.addNode(nodeC, toNodeNamed: "node_B")
+        
+        XCTAssertEqual(nodeB.neighbours.first?.node, nodeC)
+    }
+    
+    func test_AddNodeToNodeNamedAtDistance_Should_UpdateChain_WithNewAddedNodeAtDistance() {
+        sut = NodeManager(baseNodeName: "node_A")
+        let nodeB = Node(name: "node_B")
+        sut.addNode(nodeB)
+        let nodeC = Node(name: "node_C")
+        
+        sut.addNode(nodeC, toNodeNamed: "node_B", atDistance: 5)
+        
+        XCTAssertEqual(nodeB.neighbours.first?.node, nodeC)
+        XCTAssertEqual(nodeB.neighbours.first?.distance, 5)
     }
 
-    func test_NodeCount_AddingNodeWithChild_ReturnsTotalNodeCountThree() {
+    func test_NodeCount_AddingNodeWithChild_Returns_TotalNodes() {
         let nodeA = Node(name: "node_A")
         let nodeB = sut.createNode("node_B", withNeighbour: "node_C", atDistance: 10)
+        nodeA.neighbours.append((node: nodeB, 4))
 
-        let nodeChain = sut.addNode(nodeB, toNode: nodeA, atDistance: 5)
+        sut.addNode(nodeA, toNodeNamed: "")
 
-        sut.saveNodeChain(nodeChain)
-
-        XCTAssertEqual(sut.nodeCount(), 3)
-    }
-    
-    func test_NodeCount_AddingNodeWithTwoLevelChild_ReturnsTotalNodeCount() {
-        var nodeA = Node(name: "node_A")
-        var nodeB = Node(name: "node_B")
-        let nodeC = sut.createNode("node_C", withNeighbour: "node_D", atDistance: 23)
-        
-        nodeB = sut.addNode(nodeC, toNode: nodeB, atDistance: 5)
-        nodeA = sut.addNode(nodeB, toNode: nodeA, atDistance: 3)
-        
-        sut.saveNodeChain(nodeA)
-        
         XCTAssertEqual(sut.nodeCount(), 4)
     }
     
