@@ -51,14 +51,14 @@ class NodeManagerTest: XCTestCase {
     
     func test_AddNode_Should_AddNodeToChain() {
         let nodeB = Node(name: "node_B")
-        sut.addNode(nodeB)
+        sut.addNode(nodeB, toNodeNamed: "")
         
         XCTAssertEqual(sut.nodeChain.neighbours.first?.node, nodeB)
     }
     
     func test_AddNodeToChainAtDistance_UpdatesChain_WithNewAddedNodeAtDistance() {
         let nodeB = Node(name: "node_B")
-        sut.addNode(nodeB, atDistance: 5)
+        sut.addNode(nodeB, toNodeNamed: "", atDistance: 5)
         
         let newAddedNode = sut.nodeChain.neighbours.first?.node
         let newAddedNodeDistance = sut.nodeChain.neighbours.first?.distance
@@ -70,7 +70,7 @@ class NodeManagerTest: XCTestCase {
     func test_AddNodeToNodeNamed_Should_UpdateChain_WithNewAddedNode() {
         sut = NodeManager(baseNodeName: "node_A")
         let nodeB = Node(name: "node_B")
-        sut.addNode(nodeB)
+        sut.addNode(nodeB, toNodeNamed: "node_A")
         let nodeC = Node(name: "node_C")
         
         sut.addNode(nodeC, toNodeNamed: "node_B")
@@ -81,7 +81,7 @@ class NodeManagerTest: XCTestCase {
     func test_AddNodeToNodeNamedAtDistance_Should_UpdateChain_WithNewAddedNodeAtDistance() {
         sut = NodeManager(baseNodeName: "node_A")
         let nodeB = Node(name: "node_B")
-        sut.addNode(nodeB)
+        sut.addNode(nodeB, toNodeNamed: "node_A")
         let nodeC = Node(name: "node_C")
         
         sut.addNode(nodeC, toNodeNamed: "node_B", atDistance: 5)
@@ -98,6 +98,14 @@ class NodeManagerTest: XCTestCase {
         sut.addNode(nodeA, toNodeNamed: "")
 
         XCTAssertEqual(sut.nodeCount(), 4)
+    }
+    
+    func test_AddNode_Cant_Add_DuplicatedNodes() {
+        let nodeA = Node(name: "")
+        
+        sut.addNode(nodeA, toNodeNamed: "")
+        
+        XCTAssertEqual(sut.nodeCount(), 1)
     }
     
 }
