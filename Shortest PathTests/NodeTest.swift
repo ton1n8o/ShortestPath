@@ -114,4 +114,50 @@ class NodeTest: XCTestCase {
         
         XCTAssertEqual(nodeA.nodeCount(), 2)
     }
+    
+    func test_AddNeighbour_ShouldAdd_NewNeighbour() {
+        let nodeA = Node(name: "node_A")
+        let nodeB = Node(name: "node_B")
+        
+        nodeA.addNeighbour(nodeB)
+        
+        XCTAssertEqual(nodeA.nodeCount(), 2)
+    }
+    
+    func test_AddNeighbourAtDistance_ShouldAdd_NeighbourAtDistance() {
+        let nodeA = Node(name: "node_A")
+        let nodeB = Node(name: "node_B")
+        
+        nodeA.addNeighbour(nodeB, atDistance: 10)
+        
+        XCTAssertEqual(nodeA.nodeCount(), 2)
+        XCTAssertEqual(nodeA.neighbours.first?.distance, 10)
+    }
+    
+    func test_NextNotVisited_Returns_NextNotVisited() {
+        let nodeA = Node(name: "node_A")
+        nodeA.visited = true
+        let nodeB = Node(name: "node_B")
+        nodeB.visited = true
+        let nodeC = Node(name: "node_C")
+        nodeB.addNeighbour(nodeC)
+        nodeA.addNeighbour(nodeB)
+        nodeA.addNeighbour(nodeC)
+        
+        XCTAssertEqual(nodeA.nextNotVisited(), nodeC)
+    }
+    
+    func test_NextNotVisited_WhenAllNodesVisited_Returns_Nil() {
+        let nodeA = Node(name: "node_A")
+        nodeA.visited = true
+        let nodeB = Node(name: "node_B")
+        nodeB.visited = true
+        let nodeC = Node(name: "node_C")
+        nodeC.visited = true
+        nodeB.addNeighbour(nodeC)
+        nodeA.addNeighbour(nodeB)
+        nodeA.addNeighbour(nodeC)
+        
+        XCTAssertNil(nodeA.nextNotVisited())
+    }
 }

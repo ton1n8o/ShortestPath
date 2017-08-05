@@ -26,25 +26,8 @@ class Node: Equatable {
         self.neighbours = neighbours
     }
     
-    func describeNeighbours() -> String {
-        var desc = "parent: \(name):"
-        if neighbours.isEmpty {
-            return "parent: \(name):\n  no neighbours."
-        }
-        for neighbour in neighbours {
-            let name = neighbour.node.name
-            let distance = neighbour.distance
-            desc += "\n  name: \(name), distance: \(distance)"
-        }
-        return desc
-    }
-    
-    func nodeCount() -> Int {
-        var count = 1
-        for n in neighbours {
-            count += n.node.nodeCount()
-        }
-        return count
+    func addNeighbour(_ node: Node, atDistance: Int = 0) {
+        self.neighbours.append((node: node, distance: atDistance))
     }
     
     func findNodeByName(_ name: String) -> Node? {
@@ -59,6 +42,37 @@ class Node: Equatable {
             }
         }
         return nodeFound
+    }
+    
+    func nodeCount() -> Int {
+        var count = 1
+        for n in neighbours {
+            count += n.node.nodeCount()
+        }
+        return count
+    }
+    
+    func nextNotVisited() -> Node? {
+        if !self.visited {
+            return self
+        }
+        for neighbour in neighbours {
+            return neighbour.node.nextNotVisited()
+        }
+        return nil
+    }
+    
+    func describeNeighbours() -> String {
+        var desc = "parent: \(name):"
+        if neighbours.isEmpty {
+            return "parent: \(name):\n  no neighbours."
+        }
+        for neighbour in neighbours {
+            let name = neighbour.node.name
+            let distance = neighbour.distance
+            desc += "\n  name: \(name), distance: \(distance)"
+        }
+        return desc
     }
     
     // MARK: - Equatable
