@@ -45,4 +45,44 @@ struct NodeManager {
         return nodeChain.nodeCount()
     }
     
+    func shortestPathFrom(_ nodeA: String, to nodeB: String) -> Int {
+        
+        guard let node1 = nodeChain.findNodeByName(nodeA) else { return 0 }
+        guard let node2 = nodeChain.findNodeByName(nodeB) else { return 0 }
+        
+        let data = costlessNode(node1, node2: node2, distance: 0)
+        
+        return data.distance
+    }
+    
+    func costlessNode(_ node1: Node, node2: Node, distance: Int) -> (node: Node, distance: Int) {
+        
+        var totalDistance = distance
+        var distance = 0
+        var costNode: Node?
+        
+        for nb in node1.neighbours {
+            
+            NSLog("Node:\(nb.node.name) Cost:\(nb.distance)")
+            let cost = nb.distance + (node1.distanceCost ?? 0)
+            
+            nb.node.distanceCost = cost
+            
+            if distance == 0 || cost < distance {
+                distance = cost
+                costNode = nb.node
+            }
+
+        }
+        
+        totalDistance = distance
+        
+        if let n = costNode, n.neighbours.count > 0 {
+            return costlessNode(n, node2: node2, distance: totalDistance)
+        }
+        
+        return (costNode ?? node1, totalDistance)
+        
+    }
+    
 }
