@@ -47,42 +47,43 @@ struct NodeManager {
     
     func shortestPathFrom(_ nodeA: String, to nodeB: String) -> Int {
         
-        guard let node1 = nodeChain.findNodeByName(nodeA) else { return 0 }
-        guard let node2 = nodeChain.findNodeByName(nodeB) else { return 0 }
+        guard let nodeStart = nodeChain.findNodeByName(nodeA) else { return 0 }
+        guard let nodeDesti = nodeChain.findNodeByName(nodeB) else { return 0 }
         
-        let data = costlessNode(node1, node2: node2, distance: 0)
+        nodeStart.distanceCost = 0
+        return costlessNode(nodeStart, nodeDest: nodeDesti)
         
-        return data.distance
     }
     
-    func costlessNode(_ node1: Node, node2: Node, distance: Int) -> (node: Node, distance: Int) {
+    func costlessNode(_ nodeStart: Node, nodeDest: Node) -> Int {
         
-        var totalDistance = distance
-        var distance = 0
-        var costNode: Node?
+        print("Current Node: \(nodeStart.name)")
         
-        for nb in node1.neighbours {
-            
-            NSLog("Node:\(nb.node.name) Cost:\(nb.distance)")
-            let cost = nb.distance + (node1.distanceCost ?? 0)
-            
-            nb.node.distanceCost = cost
-            
-            if distance == 0 || cost < distance {
-                distance = cost
-                costNode = nb.node
+        if nodeStart == nodeDest {
+            return nodeStart.distanceCost!
+        }
+        
+        for neighbourNode in nodeStart.neighbours {
+            print("   Current Node: \(neighbourNode.node.name)")
+            let distance = neighbourNode.distance + (nodeStart.distanceCost ?? 0)
+            if neighbourNode.node.distanceCost == nil || neighbourNode.node.distanceCost! > distance {
+                neighbourNode.node.distanceCost = distance
             }
-
         }
         
-        totalDistance = distance
-        
-        if let n = costNode, n.neighbours.count > 0 {
-            return costlessNode(n, node2: node2, distance: totalDistance)
+        var nextNode: Node!
+        for neighbourNode in nodeStart.neighbours {
+            if nextNode == nil {
+                nextNode = neighbourNode.node
+            } else if nextNode.distanceCost! > neighbourNode.node.distanceCost! {
+                nextNode = neighbourNode.node
+            }
+            if neighbourNode.node == nodeDest {
+                nextNode = neighbourNode.node
+            }
         }
         
-        return (costNode ?? node1, totalDistance)
-        
+        return costlessNode(nextNode, nodeDest: nodeDest)
     }
     
 }

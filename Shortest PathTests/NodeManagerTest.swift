@@ -143,7 +143,7 @@ class NodeManagerTest: XCTestCase {
         XCTAssertEqual(distance, 0)
     }
     
-    func xtest_FindShortestPath_When_ThreeNodes_Returns_Distance() {
+    func test_FindShortestPath_When_ThreeNodes_Returns_Distance() {
         var sut = NodeManager(baseNodeName: "node_A")
         sut.addNode(Node(name: "node_B"), toNodeNamed: "node_A", atDistance: 1)
         let nodeB = sut.nodeChain.findNodeByName("node_B")!
@@ -160,24 +160,25 @@ class NodeManagerTest: XCTestCase {
     func test_FindShortestPath_Returns_NodePath() {
         
         var sut = NodeManager(baseNodeName: "node_A")
-        sut.addNode(Node(name:"node_B"), toNodeNamed: "node_A", atDistance: 4)
-        sut.addNode(Node(name:"node_C"), toNodeNamed: "node_A", atDistance: 2)
-        sut.addNode(Node(name:"node_D"), toNodeNamed: "node_C", atDistance: 8)
-        let nodeC = sut.nodeChain.findNodeByName("node_C")
+        
+        sut.addNode(Node(name:"node_B"), toNodeNamed: "node_A", atDistance: 6)
+        sut.addNode(Node(name:"node_D"), toNodeNamed: "node_A", atDistance: 1)
+        
         let nodeD = sut.nodeChain.findNodeByName("node_D")!
         let nodeB = sut.nodeChain.findNodeByName("node_B")!
-        nodeB.addNeighbour(nodeD, atDistance: 5)
-        nodeC?.addNeighbour(nodeB, atDistance: 1)
-        nodeD.addNeighbour(Node(name: "node_E"), atDistance: 2)
+        nodeD.addNeighbour(Node(name: "node_E"), atDistance: 1)
+        nodeD.addNeighbour(nodeB, atDistance: 2)
+        
         let nodeE = sut.nodeChain.findNodeByName("node_E")!
-        nodeC?.addNeighbour(nodeE, atDistance: 10)
-        nodeD.addNeighbour(Node(name: "node_F"), atDistance: 6)
-        let nodeF = sut.nodeChain.findNodeByName("node_F")!
-        nodeE.addNeighbour(nodeF, atDistance: 3)
+        nodeB.addNeighbour(nodeE, atDistance: 2)
+        nodeB.addNeighbour(Node(name: "node_C"), atDistance: 5)
         
-        let distance = sut.shortestPathFrom("node_A", to: "node_F")
+        let nodeC = sut.nodeChain.findNodeByName("node_C")!
+        nodeE.addNeighbour(nodeC, atDistance: 5)
         
-        XCTAssertEqual(distance, 13)
+        let distance = sut.shortestPathFrom("node_A", to: "node_C")
+        
+        XCTAssertEqual(distance, 7, "the distance from NODE_A to NODE_C is 7")
         
         print("\(sut.nodeChain.describeNeighbours())")
     }
